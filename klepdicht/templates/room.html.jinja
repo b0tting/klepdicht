@@ -1,0 +1,84 @@
+{% extends 'base.html.jinja' %}
+{% block main %}
+    <div id="messages">
+        <div>
+            <input type="text" name="message" id="message" class="new_message bubble">
+            <button type="button" id="send" class="bubble sendbutton">Send</button>
+        </div>
+        <div id="empty_message" class="bubble empty_message">No messages in this room</div>
+        <div id="bottom"></div>
+    </div>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script>
+        let last_message_id = 0;
+        message_character_limit = {{ message_character_limit }}
+        document.querySelector('#message').setAttribute('maxlength', message_character_limit)
+
+        {% if session and session.user and session.user.uuid %}
+        user_id = "{{ session.user.uuid }}"
+        {% else %}
+        user_id = false;
+        {% endif %}
+
+        function sendMessage() {
+            let message = document.querySelector('#message').value;
+            if(message.length == 0) {
+                return;
+            } else if(message.length > message_character_limit) {
+                document.querySelector('#message').value = message.substring(0, message_character_limit);
+                return;
+            }
+            console.log("Sending a message")
+            socket.send({message: message});
+            document.querySelector('#message').value = '';
+        }
+
+        function addMessage(message_content, message_author_uuid, color) {
+            let messages = document.querySelector('#messages');
+            let message = document.createElement('div');
+            message.textContent = message_content;
+            message.classList.add('bubble')
+            if(message_author_uuid == user_id) {
+                message.classList.add('left')
+            } else {
+                message.classList.add('right')
+            }
+            message.setAttribute('style', `background: linear-gradient(135deg,${color},#1384C5) border-box;`);
+            messages.insertBefore(message, messages.childNodes[2]);
+        }
+
+        const socket = io.connect('{{ request.host_url }}');
+        socket.on('connect', function() {
+            socket.emit('joined', {"last_message_id": last_message_id});
+        });
+
+        socket.on('message', function(data) {
+            if (!data) {
+                console.log("Empty message from server");
+                return;
+            }
+            if(data.error) {
+                console.log(data.error);
+                if(data.reason =="login") {
+                    window.location.href = "{{ url_for('auth.login') }}";
+                }
+            }
+            if(data.message) {
+                document.querySelector('#empty_message').style.display = 'none';
+            }
+            addMessage(data.message, data.author_uuid, data.color);
+            last_message_id = data.id;
+        });
+
+        socket.on('error', console.error.bind(console));
+
+        document.querySelector('#send').addEventListener('click', sendMessage);
+        document.onkeyup = function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        };
+
+    </script>
+
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html.jinja' %}
+{% block main %}
+        <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="logo" class="logo">
+        <div class="login">
+            <h1>KLEPDICHT</h1>
+            <h4>AI based anonymous non-blockhain cryptochat</h4>
+            <p><a href="#modal" id="openmodal">What is this?</a></p>
+            <form action="{{ url_for("auth.handle_login") }}" method="POST">
+                <div><input type="text" class="bubble logininput" name="room" id="room" placeholder="Room" value="{{ room }}"></div>
+                <div><input type="text" name="username"  class="bubble logininput" id="username" placeholder="Username" value="{{ username }}"></div>
+                <div><input type="password" name="password"  class="bubble logininput" id="password" placeholder="Password" value="{{ password }}"></div>
+                <div><input type="submit" value="Login" class="bubble sendbutton"></div>
+            </form>
+        </div>
+        <div id="modal" class="modal">
+            <div id="modal-content" class="modal-content bubble">
+                <h2>What is this?</h2>
+                <p>
+                    KLEPDICHT is a website used for anonymous chatting.
+                    <ul>
+                        <li>Only the last 10 messages are stored for each room</li>
+                        <li>No names, dates and times are stored</li>
+                    </ul>
+
+                    To enjoy safely, please follow these rules:
+                    <ul>
+                        <li>Never use names, refer to colors only</li>
+                        <li>Never use names, refer to colors only</li>
+                        <li><b>Never use names, refer to colors only!</b></li>
+                    </ul>
+                </p>
+            </div>
+        </div>
+        <script>
+        let modal = document.getElementById("modal");
+        let btn = document.getElementById("openmodal");
+        let modal_content = document.getElementById("modal-content");
+        btn.onclick = function() {
+          modal.style.display = "block";
+        }
+        window.onclick = function(event) {
+          if (event.target == modal || event.target == modal_content) {
+            modal.style.display = "none";
+          }
+        }
+        </script>
+{% endblock %}

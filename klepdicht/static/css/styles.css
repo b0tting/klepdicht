@@ -1,0 +1,141 @@
+body {
+  margin-top: 10px;
+  min-height: 100vh;
+  font-family: sans-serif;
+  font-size: 20px;
+}
+
+/*main {*/
+/*    display: grid;*/
+/*    place-content: center;*/
+/*    gap: 20px;*/
+/*    font-style: italic;*/
+/*}*/
+
+.new_message {
+  color: black;
+  font-family: sans-serif;
+  font-size: 20px;
+
+}
+
+.sendbutton {
+  background: linear-gradient(135deg,black,red) border-box;
+  width: 100px;
+  font-size: 20px;
+  color: #fff;
+}
+
+.logo {
+    position:fixed;
+    width: 300px;
+    color: #fff;
+    bottom: 0px;
+    left: 50%;
+    z-index: -1;
+}
+
+#messages, .flashed_messages {
+    place-content: center;
+    display: grid;
+    gap: 20px;
+}
+
+.login {
+    place-content: center;
+    display: grid;
+    gap: 20px;
+}
+
+.login > form > div {
+    padding: 5px;
+}
+
+.loginbutton {
+  background: linear-gradient(135deg,black,red) border-box;
+  width: 100px;
+  font-size: 20px;
+}
+
+.logininput {
+  font-family: sans-serif;
+  font-size: 20px;
+  width: 100%;
+}
+
+.empty_message {
+  font-family: sans-serif;
+  font-size: 20px;
+  background: linear-gradient(135deg,black,red) border-box;
+  color: white;
+  width: 100%;
+  text-align: center;
+  max-width: 100% !important;
+}
+
+.bubble {
+  --r: 25px; /* the radius */
+  --t: 30px; /* the size of the tail */
+
+  max-width: 300px;
+  padding: calc(2*var(--r)/3);
+  -webkit-mask:
+    radial-gradient(var(--t) at var(--_d) 0,#0000 98%,#000 102%)
+      var(--_d) 100%/calc(100% - var(--r)) var(--t) no-repeat,
+    conic-gradient(at var(--r) var(--r),#000 75%,#0000 0)
+      calc(var(--r)/-2) calc(var(--r)/-2) padding-box,
+    radial-gradient(50% 50%,#000 98%,#0000 101%)
+      0 0/var(--r) var(--r) space padding-box;
+  /*background: linear-gradient(135deg,#FE6D00,#1384C5) border-box;*/
+}
+
+.left {
+  --_d: 0%;
+  border-left: var(--t) solid #0000;
+  margin-right: var(--t);
+  place-self: start;
+  color: #fff;
+}
+.right {
+  --_d: 100%;
+  border-right: var(--t) solid #0000;
+  margin-left: var(--t);
+  place-self: end;
+  color: #fff;
+}
+
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}

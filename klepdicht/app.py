@@ -1,11 +1,10 @@
 import logging
 
-from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_socketio import SocketIO
+import sys
 
-from klepdicht.lib.controllers.auth_controller import AuthController
-from lib.models.settings_model import SettingsModel
-
+for a in sys.path:
+    a = a.replace("\\\\", "\\")
+    print(a)
 
 # Returns "lib.controllers.auth_controller" from "AuthController" and "lib.controllers"
 from klepdicht import create_app, socketio

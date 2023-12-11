@@ -14,54 +14,54 @@ users:
     password: nicetry
     color: "red"
     rooms:
-       - pizzacocaina
-  - name: el_tulpo
+       - la_famiglia
+  - name: la_zia
     password: tulpo
     color: "blue"
     rooms:
-       - pizzacocaina
-  - name: princess
+       - la_famiglia
+  - name: la_madre
     color: "pink"
     password: welkom123
     rooms:
-       - pizzacocaina
-  - name: gondola
+       - la_famiglia
+  - name: la_sorella
     color: "green"
     password: gondddola123
     rooms:
-       - pizzacocaina
-  - name: macho_wim
+       - la_famiglia
+  - name: la_pizzeria
     color: "black"
     password: wim123
     rooms:
-       - pizzacocaina
-  - name: jeroen
+       - la_famiglia
+  - name: il_compagno
     color: "yellow"
     password: jeroen123
     rooms:
-       - pizzacocaina
+       - la_famiglia
   - name: jeroen2
     color: "aqua"
     password: jeroen123
     rooms:
-       - pizzacocaina
+       - la_famiglia
   - name: maaaaaitoday
     color: "maroon"
     password: maroon
     rooms:
-       - pizzacocaina
+       - la_famiglia
   - name: bigboy
     color: "purple"
     password: bigboy123
     rooms:
-       - pizzacocaina
+       - la_famiglia
   - name: notfuchsia
     color: "fuchsia"
     password: fuchsiaaaaa
     rooms:
-     - pizzacocaina
+     - la_famiglia
   - name: jetje17
     color: "lime"
     password: jetje123
     rooms:
-       - pizzacocaina
+       - la_famiglia

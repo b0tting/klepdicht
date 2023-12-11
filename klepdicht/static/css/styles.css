@@ -16,10 +16,42 @@ body {
   color: black;
   font-family: sans-serif;
   font-size: 20px;
+}
+.new_message::-webkit-input-placeholder {
+    /* Edge */
+    color: gray;
+}
 
+.new_message:-ms-input-placeholder {
+    /* Internet Explorer */
+    color: gray;
+}
+
+.new_message::placeholder {
+    color: gray;
+}
+
+.exitbutton {
+  font-size: 20px;
+  color: #fff;
+  background: linear-gradient(135deg,black,white);
 }
 
 .sendbutton {
+  width: 100px;
+  font-size: 20px;
+  color: #fff;
+    --_d: 100%;
+    -webkit-mask:
+    radial-gradient(var(--t) at var(--_d) 0,#0000 98%,#000 102%)
+      var(--_d) 100%/calc(100% - var(--r)) var(--t) no-repeat,
+    conic-gradient(at var(--r) var(--r),#000 75%,#0000 0)
+      calc(var(--r)/-2) calc(var(--r)/-2) padding-box,
+    radial-gradient(50% 50%,#000 98%,#0000 101%)
+      0 0/var(--r) var(--r) space padding-box;
+}
+
+.loginbutton {
   background: linear-gradient(135deg,black,red) border-box;
   width: 100px;
   font-size: 20px;

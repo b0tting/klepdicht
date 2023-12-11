@@ -3,20 +3,20 @@
         <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="logo" class="logo">
         <div class="login">
             <h1>KLEPDICHT</h1>
-            <h4>AI based anonymous non-blockhain cryptochat</h4>
-            <p><a href="#modal" id="openmodal">What is this?</a></p>
+            <p>AI based anonymous non-blockhain cryptochat<br>
+            <a href="#modal" id="openmodal">What is this?</a></p>
+
             <form action="{{ url_for("auth.handle_login") }}" method="POST">
                 <div><input type="text" class="bubble logininput" name="room" id="room" placeholder="Room" value="{{ room }}"></div>
                 <div><input type="text" name="username"  class="bubble logininput" id="username" placeholder="Username" value="{{ username }}"></div>
                 <div><input type="password" name="password"  class="bubble logininput" id="password" placeholder="Password" value="{{ password }}"></div>
-                <div><input type="submit" value="Login" class="bubble sendbutton"></div>
+                <div><input type="submit" value="Login" class="bubble loginbutton"></div>
             </form>
         </div>
         <div id="modal" class="modal">
             <div id="modal-content" class="modal-content bubble">
                 <h2>What is this?</h2>
-                <p>
-                    KLEPDICHT is a website used for anonymous chatting.
+                <p>KLEPDICHT is a website used for anonymous chatting.
                     <ul>
                         <li>Only the last 10 messages are stored for each room</li>
                         <li>No names, dates and times are stored</li>

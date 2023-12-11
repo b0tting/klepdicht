@@ -4,6 +4,7 @@
         <div>
             <input type="text" name="message" id="message" class="new_message bubble">
             <button type="button" id="send" class="bubble sendbutton">Send</button>
+            <button type="button" id="exit" class="bubble exitbutton">X</button>
         </div>
         <div id="empty_message" class="bubble empty_message">No messages in this room</div>
         <div id="bottom"></div>
@@ -15,7 +16,11 @@
         document.querySelector('#message').setAttribute('maxlength', message_character_limit)
 
         {% if session and session.user and session.user.uuid %}
-        user_id = "{{ session.user.uuid }}"
+        user_id = "{{ session.user.uuid }}";
+        color = "{{ session.user.color }}";
+        room_name = "{{ session.room.name }}";
+        document.getElementById('message').placeholder = "#" + room_name;
+        document.querySelector('#send').style.background = `linear-gradient(135deg,${color},#1384C5) border-box`;
         {% else %}
         user_id = false;
         {% endif %}
@@ -38,6 +43,7 @@
             let message = document.createElement('div');
             message.textContent = message_content;
             message.classList.add('bubble')
+            console.log(message_author_uuid, user_id)
             if(message_author_uuid == user_id) {
                 message.classList.add('left')
             } else {
@@ -78,6 +84,10 @@
                 sendMessage();
             }
         };
+        document.querySelector('#exit').addEventListener('click', function() {
+            //socket.emit('leave');
+            window.location.href = "{{ url_for('auth.logout') }}";
+        });
 
     </script>
 

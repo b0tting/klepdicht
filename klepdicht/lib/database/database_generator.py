@@ -2,6 +2,8 @@ import sqlite3
 import uuid
 from pathlib import Path
 
+import yaml
+
 
 class KlepDichtDatabaseGenerator:
     def __init__(self, database_file, overwrite=False, initial_data=False):
@@ -10,6 +12,7 @@ class KlepDichtDatabaseGenerator:
         self.database_overwrite = overwrite
         self.prepare_file_location()
         self.conn = sqlite3.connect(self.database_file)
+        self.room_cache = {}
 
     def generate_database(self):
         self.create_table_rooms()
@@ -17,8 +20,6 @@ class KlepDichtDatabaseGenerator:
         self.create_user_room_link()
         self.create_table_messages()
         self.create_table_settings()
-        self.add_default_settings()
-        self.add_default_data()
 
     def create_table_rooms(self):
         create_statement = """
@@ -84,53 +85,6 @@ class KlepDichtDatabaseGenerator:
         self.__execute_transaction_statement(create_statement)
         print("✅ Settings table created")
 
-    def add_default_settings(self):
-        settings = [
-            ["version", "0.0.1"],
-            ["name", "klepdicht"],
-            ["secret_key", uuid.uuid4().hex],
-            ["message_limit", 10],
-            ["message_character_limit", 250],
-            ["port", 5004],
-            ["endpoint_url", "https://klepdicht.kettingzaagadventures.nl"],
-        ]
-        self.__execute_many_transaction_statement(
-            "INSERT INTO settings (name, value) VALUES (?, ?)", settings
-        )
-
-    def add_default_data(self):
-        if self.create_initial_data:
-            query = "INSERT INTO users (username, uuid, cryptoname,  color, password) VALUES (?, ?, ?, ?, ?)"
-            user_id = self.__execute_transaction_statement(
-                query, ["sexyuser", uuid.uuid4().hex, "banana", "red", "admin"]
-            )
-            user_id2 = self.__execute_transaction_statement(
-                query, ["otheruser", uuid.uuid4().hex, "banana", "blue", "admin"]
-            )
-            query = "INSERT INTO rooms (name, description, uuid) VALUES (?, ?, ?)"
-            room_id = self.__execute_transaction_statement(
-                query, ["test", "testroom", uuid.uuid4().hex]
-            )
-            query = "INSERT INTO user_room_link (room_id, user_id) VALUES (?, ?)"
-            self.__execute_transaction_statement(query, [room_id, user_id])
-            self.__execute_transaction_statement(query, [room_id, user_id2])
-            query = "INSERT INTO messages (message, room_id, user_id) VALUES (?, ?, ?)"
-            self.__execute_transaction_statement(
-                query, ["testmessage", room_id, user_id]
-            )
-            self.__execute_transaction_statement(
-                query, ["testmessage 2", room_id, user_id2]
-            )
-
-            print("✅ Default data added")
-
-    def __execute_many_transaction_statement(
-        self, create_statement, list_of_parameters=()
-    ):
-        c = self.conn.cursor()
-        c.executemany(create_statement, list_of_parameters)
-        self.conn.commit()
-
     def __execute_transaction_statement(self, create_statement, parameters=()):
         c = self.conn.cursor()
         try:
@@ -146,6 +100,48 @@ class KlepDichtDatabaseGenerator:
         c.row_factory = sqlite3.Row
         c.execute(query, parameters)
         return c.fetchall()
+
+    def load(self, setup_file):
+        with open(setup_file, "r") as f:
+            setup = yaml.safe_load(f)
+            self.load_settings(setup["settings"])
+            self.load_users(setup["users"])
+
+    def load_settings(self, settings):
+        for setting in settings:
+            self.__execute_transaction_statement(
+                "INSERT INTO settings (name, value) VALUES (?, ?)",
+                (setting, settings[setting]),
+            )
+        print("✅ Settings loaded")
+
+    def load_users(self, users):
+        for user in users:
+            user_id = self.__execute_transaction_statement(
+                "INSERT INTO users (uuid, username, cryptoname, password, color) VALUES (?, ?, ?, ?, ?)",
+                (
+                    str(uuid.uuid4()),
+                    user["name"],
+                    user["name"],  # Heb geen zin meer in een cryptoname
+                    user["password"],
+                    user["color"],
+                ),
+            )
+            for room in user["rooms"]:
+                if room in self.room_cache:
+                    room_id = self.room_cache[room]
+                else:
+                    room_id = self.__execute_transaction_statement(
+                        "INSERT INTO rooms (uuid, name, description) VALUES (?, ?, ?)",
+                        (str(uuid.uuid4()), room, room),
+                    )
+                    self.room_cache[room] = room_id
+
+                self.__execute_transaction_statement(
+                    "INSERT INTO user_room_link (room_id, user_id) VALUES (?, ?)",
+                    (room_id, user_id),
+                )
+        print("✅ Users loaded")
 
     def prepare_file_location(self):
         if not self.database_file.parent.exists():
@@ -180,3 +176,4 @@ if __name__ == "__main__":
         database_path, overwrite=True, initial_data=True
     )
     database_generator.generate_database()
+    database_generator.load(setup_file="../../../default_setup.yaml")

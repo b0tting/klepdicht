@@ -14,16 +14,16 @@ message_model = MessageModel(settings.get_database_file())
 
 @socketio.on("message")
 def handle_message(body):
-    if "user" not in session or "room_id" not in session:
+    if "user" not in session or "room" not in session:
         logging.warning("No user_id or room_id in session")
-        return {"error": "No user_id or room_id in session", "reason": "login"}, 400
+        return {"error": "No user or room in session", "reason": "login"}, 400
 
     user = session["user"]
-    room_id = session["room_id"]
+    room = session["room"]
     logging.debug(f"Got message from user {user['id']}")
     if message := body.get("message"):
         print(f"Got message in body and saving {message}")
-        message_model.save_message(room_id, user["id"], message)
+        message_model.save_message(room["id"], user["id"], message)
         emit(
             "message",
             {
@@ -40,8 +40,8 @@ def handle_message(body):
 
 @socketio.on("joined")
 def handle_join(join_message):
-    if "user" not in session or "room_id" not in session:
-        print("No user or room_id in session")
+    if "user" not in session or "room" not in session:
+        print("No user or roomd in session")
         socketio.send({"error": "No user_id or room_id in session", "reason": "login"})
         return {"error": "No user_id or room_id in session", "reason": "login"}, 400
     client_last_seen_id = join_message.get("last_message_id")

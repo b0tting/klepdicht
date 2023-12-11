@@ -2,10 +2,6 @@ import logging
 
 import sys
 
-for a in sys.path:
-    a = a.replace("\\\\", "\\")
-    print(a)
-
 # Returns "lib.controllers.auth_controller" from "AuthController" and "lib.controllers"
 from klepdicht import create_app, socketio
 

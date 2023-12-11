@@ -34,6 +34,16 @@ class AuthController(BaseController):
         }
         return render_template("login.html.jinja", **parameters)
 
+    def logout(self):
+        user = session.pop("user", None)
+        room = session.pop("room", None)
+        parameters = {
+            "room": room.get("name"),
+            "username": user.get("username"),
+            "password": user.get("password"),
+        }
+        return render_template("login.html.jinja", **parameters)
+
     def handle_login(self):
         parameters = {
             "room": request.form["room"],
@@ -43,10 +53,7 @@ class AuthController(BaseController):
 
         try:
             self.auth_model.validate_login(**parameters)
-            session["room_id"] = self.auth_model.get_id_for_room_name(
-                parameters["room"]
-            )
-
+            session["room"] = self.auth_model.get_room_for_room_name(parameters["room"])
             session["user"] = dict(
                 self.auth_model.get_user_for_username(parameters["username"])
             )
@@ -60,6 +67,3 @@ class AuthController(BaseController):
             flash(str(e))
             result = self.login(**parameters)
         return result
-
-    def logout(self):
-        return render_template("login.html")

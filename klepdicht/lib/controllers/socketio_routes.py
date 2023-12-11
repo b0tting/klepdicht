@@ -22,6 +22,7 @@ def handle_message(body):
     room = session["room"]
     logging.debug(f"Got message from user {user['id']}")
     if message := body.get("message"):
+        message = message.strip()
         print(f"Got message in body and saving {message}")
         message_model.save_message(room["id"], user["id"], message)
         emit(

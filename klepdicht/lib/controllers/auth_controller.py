@@ -46,9 +46,9 @@ class AuthController(BaseController):
 
     def handle_login(self):
         parameters = {
-            "room": request.form["room"],
-            "username": request.form["username"],
-            "password": request.form["password"],
+            "room": request.form.get("room", "").strip(),
+            "username": request.form.get("username", "").strip(),
+            "password": request.form.get("password", "").strip(),
         }
 
         try:

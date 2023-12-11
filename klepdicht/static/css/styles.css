@@ -38,7 +38,7 @@ body {
 .exitbutton {
   font-size: 20px;
   color: #fff;
-  background: linear-gradient(135deg,black,white);
+  background: linear-gradient(135deg,black,white) border-box;
 }
 
 .sendbutton {

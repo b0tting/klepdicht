@@ -1,0 +1,67 @@
+settings:
+  # The port to listen on
+  port: 5004
+  # The host to listen on
+  name: klepdicht
+  # The secret key to use for signing cookies
+  secret_key: fane4Can
+  message_limit: 10
+  message_character_limit: 250
+  endpoint_url: https://klepdicht.kettingzaagadventures.nl/
+  version: 0.0.1
+users:
+  - name: admin
+    password: nicetry
+    color: "red"
+    rooms:
+       - pizzacocaina
+  - name: el_tulpo
+    password: tulpo
+    color: "blue"
+    rooms:
+       - pizzacocaina
+  - name: princess
+    color: "pink"
+    password: welkom123
+    rooms:
+       - pizzacocaina
+  - name: gondola
+    color: "green"
+    password: gondddola123
+    rooms:
+       - pizzacocaina
+  - name: macho_wim
+    color: "black"
+    password: wim123
+    rooms:
+       - pizzacocaina
+  - name: jeroen
+    color: "yellow"
+    password: jeroen123
+    rooms:
+       - pizzacocaina
+  - name: jeroen2
+    color: "aqua"
+    password: jeroen123
+    rooms:
+       - pizzacocaina
+  - name: maaaaaitoday
+    color: "maroon"
+    password: maroon
+    rooms:
+       - pizzacocaina
+  - name: bigboy
+    color: "purple"
+    password: bigboy123
+    rooms:
+       - pizzacocaina
+  - name: notfuchsia
+    color: "fuchsia"
+    password: fuchsiaaaaa
+    rooms:
+     - pizzacocaina
+  - name: jetje17
+    color: "lime"
+    password: jetje123
+    rooms:
+       - pizzacocaina

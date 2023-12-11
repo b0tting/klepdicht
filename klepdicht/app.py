@@ -2,6 +2,9 @@ import logging
 
 import sys
 
+# What the hack batman?
+sys.path.append("..")
+
 # Returns "lib.controllers.auth_controller" from "AuthController" and "lib.controllers"
 from klepdicht import create_app, socketio
 

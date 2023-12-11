@@ -33,10 +33,7 @@ def create_app(settings):
     app.secret_key = settings.get("secret_key")
 
     blueprint_dir = "lib.controllers"
-    blueprints = [
-        "AuthController",
-        "RoomController",
-    ]
+    blueprints = ["AuthController", "RoomController", "AdminController"]
     for blueprint in blueprints:
         module = __import__(
             generate_module_name(blueprint_dir, blueprint), fromlist=["bp"]

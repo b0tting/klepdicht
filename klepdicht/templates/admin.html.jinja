@@ -1,0 +1,41 @@
+{% extends 'base.html.jinja' %}
+{% block main %}
+
+{%  for room in users_room %}
+ <h4>Room: {{ room.name }}</h4>
+ <table>
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Link</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for user in users_room[room] %}
+        <tr>
+            <td style="color: {{ user.color }};">{{ user.username }}</td>
+            <td><a href="/login/{{ room.name }}/{{ user.username }}/{{ user.password }}">Join</a></td>
+        </tr>
+        {% endfor %}
+    </tbody>
+ </table>
+<table>
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Time</th>
+            <th>Message</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for message in messages_room[room] %}
+        <tr>
+            <td style="color: {{ message.color }};">{{ message.username }}</td>
+            <td>{{ message.date_created }}</td>
+            <td>{{ message.message }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+ </table>
+{% endfor %}
+{% endblock %}

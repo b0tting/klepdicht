@@ -7,9 +7,9 @@
             <a href="#modal" id="openmodal">What is this?</a></p>
 
             <form action="{{ url_for("auth.handle_login") }}" method="POST">
-                <div><input type="text" class="bubble logininput" name="room" id="room" placeholder="Room" value="{{ room }}"></div>
-                <div><input type="text" name="username"  class="bubble logininput" id="username" placeholder="Username" value="{{ username }}"></div>
-                <div><input type="password" name="password"  class="bubble logininput" id="password" placeholder="Password" value="{{ password }}"></div>
+                <div><input type="text" autoCapitalize="none" class="bubble logininput" name="room" id="room" placeholder="Room" value="{{ room }}"></div>
+                <div><input type="text" autoCapitalize="none" name="username"  class="bubble logininput" id="username" placeholder="Username" value="{{ username }}"></div>
+                <div><input type="password" autoCapitalize="none" name="password"  class="bubble logininput" id="password" placeholder="Password" value="{{ password }}"></div>
                 <div><input type="submit" value="Login" class="bubble loginbutton"></div>
             </form>
         </div>

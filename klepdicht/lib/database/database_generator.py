@@ -91,7 +91,8 @@ class KlepDichtDatabaseGenerator:
             ["secret_key", uuid.uuid4().hex],
             ["message_limit", 10],
             ["message_character_limit", 250],
-            ["port", 5000],
+            ["port", 5004],
+            ["endpoint_url", "https://klepdicht.kettingzaagadventures.nl"],
         ]
         self.__execute_many_transaction_statement(
             "INSERT INTO settings (name, value) VALUES (?, ?)", settings

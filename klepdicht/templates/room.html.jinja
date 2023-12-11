@@ -47,7 +47,7 @@
             messages.insertBefore(message, messages.childNodes[2]);
         }
 
-        const socket = io.connect('{{ request.host_url }}');
+        const socket = io.connect('{{ endpoint_url }}');
         socket.on('connect', function() {
             socket.emit('joined', {"last_message_id": last_message_id});
         });

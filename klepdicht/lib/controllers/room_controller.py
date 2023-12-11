@@ -19,6 +19,7 @@ class RoomController(BaseController):
         return render_template(
             "room.html.jinja",
             message_character_limit=self.settings.get("message_character_limit"),
+            endpoint_url=self.settings.get("endpoint_url"),
         )
 
     def get_messages_since_id(self, message_id):

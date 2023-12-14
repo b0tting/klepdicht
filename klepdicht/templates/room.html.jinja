@@ -10,7 +10,7 @@
         {% endif %}
 
         </div>
-        <div id="empty_message" class="bubble empty_message">No messages in this room</div>
+        <div id="empty_message" class="bubble info">No messages in this room</div>
         <div id="bottom"></div>
     </div>
     <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
@@ -31,7 +31,7 @@
 
         function sendMessage() {
             let message = document.querySelector('#message').value;
-            if(message.length == 0) {
+            if(message.length <= 0) {
                 return;
             } else if(message.length > message_character_limit) {
                 document.querySelector('#message').value = message.substring(0, message_character_limit);
@@ -40,6 +40,15 @@
             console.log("Sending a message")
             socket.send({message: message});
             document.querySelector('#message').value = '';
+        }
+
+        function addInfoMessage(message_content) {
+            let messages = document.querySelector('#messages');
+            let message = document.createElement('div');
+            message.textContent = message_content;
+            message.classList.add('bubble')
+            message.classList.add('info')
+            messages.insertBefore(message, messages.childNodes[2]);
         }
 
         function addMessage(message_content, message_author_uuid, color) {
@@ -76,8 +85,13 @@
             if(data.message) {
                 document.querySelector('#empty_message').style.display = 'none';
             }
-            addMessage(data.message, data.author_uuid, data.color);
-            last_message_id = data.id;
+
+            if(data.is_info) {
+                addInfoMessage(data.message);
+            } else {
+                addMessage(data.message, data.author_uuid, data.color);
+                last_message_id = data.id;
+            }
         });
 
         socket.on('error', console.error.bind(console));

@@ -40,6 +40,7 @@ class KlepDichtDatabaseGenerator:
             uuid TEXT NOT NULL,
             username TEXT NOT NULL,
             cryptoname TEXT NOT NULL,
+            is_invisible INTEGER DEFAULT 0,
             password TEXT NOT NULL,
             color TEXT NOT NULL,
             date_created DATETIME DEFAULT CURRENT_TIMESTAMP);
@@ -118,11 +119,12 @@ class KlepDichtDatabaseGenerator:
     def load_users(self, users):
         for user in users:
             user_id = self.__execute_transaction_statement(
-                "INSERT INTO users (uuid, username, cryptoname, password, color) VALUES (?, ?, ?, ?, ?)",
+                "INSERT INTO users (uuid, username, cryptoname, is_invisible, password, color) VALUES (?, ?, ?, ?, ?, ?)",
                 (
                     str(uuid.uuid4()),
                     user["name"],
                     user["name"],  # Heb geen zin meer in een cryptoname
+                    user.get("invisible", False),
                     user["password"],
                     user["color"],
                 ),

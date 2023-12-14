@@ -91,10 +91,11 @@ body {
   width: 100%;
 }
 
-.empty_message {
+.info {
   font-family: sans-serif;
   font-size: 20px;
-  background: linear-gradient(135deg,black,red) border-box;
+  --_d: 100%;
+  background: linear-gradient(135deg,silver,white) border-box;
   color: white;
   width: 100%;
   text-align: center;

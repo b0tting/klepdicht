@@ -7,9 +7,12 @@ from klepdicht import socketio, controllers
 from klepdicht.lib.models.message_model import MessageModel
 from flask_socketio import emit
 
+from klepdicht.lib.models.room_model import RoomModel
+
 # BAD BAD BAD.
 settings = controllers.room_controller.settings
 message_model = MessageModel(settings.get_database_file())
+room_model = RoomModel(settings.get_database_file())
 
 
 @socketio.on("message")
@@ -20,7 +23,7 @@ def handle_message(body):
 
     user = session["user"]
     room = session["room"]
-    logging.debug(f"Got message from user {user['id']}")
+    logging.debug(f"Got message from user {user['id']} with sid {request.sid}")
     if message := body.get("message"):
         message = message.strip()
         print(f"Got message in body and saving {message}")
@@ -42,7 +45,7 @@ def handle_message(body):
 @socketio.on("joined")
 def handle_join(join_message):
     if "user" not in session or "room" not in session:
-        print("No user or roomd in session")
+        print("No user or room in session")
         socketio.send({"error": "No user_id or room_id in session", "reason": "login"})
         return {"error": "No user_id or room_id in session", "reason": "login"}, 400
     client_last_seen_id = join_message.get("last_message_id")
@@ -56,6 +59,15 @@ def handle_join(join_message):
     logging.debug(
         f"Sending {len(messages)} messages to user {user_id} with sid {request.sid}"
     )
+    user_count = room_model.get_visible_user_count(session["room"]["id"])
+    socketio.send(
+        {
+            "message": f"There are {user_count} users in this room",
+            "is_info": True,
+        },
+        room=request.sid,
+    )
+
     for message in messages:
         socketio.send(
             {

@@ -7,10 +7,11 @@ settings:
   secret_key: fane4Can
   message_limit: 10
   message_character_limit: 250
-  endpoint_url: https://klepdicht.kettingzaagadventures.nl/
+  endpoint_url: http://127.0.0.1:5004
   version: 0.0.1
 users:
   - name: admin
+    invisible: true
     password: nicetry
     color: "red"
     rooms:
@@ -41,26 +42,31 @@ users:
     rooms:
        - la_famiglia
   - name: jeroen2
+    invisible: true
     color: "aqua"
     password: jeroen123
     rooms:
        - la_famiglia
   - name: maaaaaitoday
+    invisible: true
     color: "maroon"
     password: maroon
     rooms:
        - la_famiglia
   - name: bigboy
+    invisible: true
     color: "purple"
     password: bigboy123
     rooms:
        - la_famiglia
   - name: notfuchsia
+    invisible: true
     color: "fuchsia"
     password: fuchsiaaaaa
     rooms:
      - la_famiglia
   - name: jetje17
+    invisible: true
     color: "lime"
     password: jetje123
     rooms:

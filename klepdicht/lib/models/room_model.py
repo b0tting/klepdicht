@@ -23,6 +23,15 @@ class RoomModel(BaseModel):
         )
         return [dict(users) for users in cursor.fetchall()]
 
+    def get_visible_user_count(self, room_id):
+        cursor = self.get_cursor()
+        cursor.execute(
+            "SELECT count(*) FROM users u WHERE u.id in (SELECT user_id FROM user_room_link WHERE room_id = ?) and u.is_invisible is not 1",
+            (room_id,),
+        )
+        result = cursor.fetchone()[0]
+        return result
+
     def get_messages_for_room(self, room, time_asc=True):
         cursor = self.get_cursor()
         order = "ASC" if time_asc else "DESC"

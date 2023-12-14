@@ -7,6 +7,7 @@
     <thead>
         <tr>
             <th>Username</th>
+            <th>Is Invisible</th>
             <th>Link</th>
         </tr>
     </thead>
@@ -14,6 +15,7 @@
         {% for user in users_room[room] %}
         <tr>
             <td style="color: {{ user.color }};">{{ user.username }}</td>
+            <td>{{ user.is_invisible }}</td>
             <td><a href="/login/{{ room.name }}/{{ user.username }}/{{ user.password }}">Join</a></td>
         </tr>
         {% endfor %}

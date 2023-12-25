@@ -11,11 +11,13 @@ settings:
   version: 0.0.1
 users:
   - name: admin
+    is_admin: true
     invisible: true
     password: nicetry
     color: "red"
     rooms:
        - la_famiglia
+       - test
   - name: la_zia
     password: tulpo
     color: "blue"

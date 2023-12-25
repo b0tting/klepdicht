@@ -14,13 +14,17 @@ class MessageModel(BaseModel):
         result = cursor.fetchone()
         return result["max_id"]
 
-    def get_messages_since_id(self, message_id, limit=10):
+    def get_messages_since_id(self, message_id, room_id, limit=10):
         logging.debug(f"Getting messages since {message_id}")
         cursor = self.get_cursor()
+        query = f"""
+            SELECT m.*, u.username as author, u.uuid as author_uuid, u.color as color FROM messages m 
+            LEFT JOIN users u on m.user_id == u.id
+            WHERE m.id > ? AND m.room_id = ?
+            ORDER BY id DESC LIMIT {str(limit)}"""
         cursor.execute(
-            "SELECT m.*, u.username as author, u.uuid as author_uuid, u.color as color FROM messages m LEFT JOIN users u on m.user_id == u.id WHERE m.id > ? ORDER BY id DESC LIMIT "
-            + str(limit),
-            (message_id,),
+            query,
+            (message_id, room_id),
         )
         result = cursor.fetchall()
         result.reverse()

@@ -40,3 +40,8 @@ class RoomModel(BaseModel):
             (room["id"],),
         )
         return [dict(messages) for messages in cursor.fetchall()]
+
+    def get_room_for_uuid(self, uuid):
+        cursor = self.get_cursor()
+        cursor.execute("SELECT * FROM rooms WHERE uuid = ?", (uuid,))
+        return cursor.fetchone()

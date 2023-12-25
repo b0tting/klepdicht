@@ -36,28 +36,27 @@ class AuthController(BaseController):
 
     def logout(self):
         user = session.pop("user", None)
-        room = session.pop("room", None)
-        parameters = {
-            "room": room.get("name"),
-            "username": user.get("username"),
-            "password": user.get("password"),
-        }
-        return render_template("login.html.jinja", **parameters)
+        if user:
+            flash(f"{user.get('username')} logged out")
+            parameters = {
+                "username": user.get("username"),
+                "password": user.get("password"),
+            }
+            return redirect(url_for("auth.login", **parameters))
+        else:
+            return redirect(url_for("auth.login"))
 
     def handle_login(self):
         parameters = {
-            "room": request.form.get("room", "").strip(),
+            "room_name": request.form.get("room", "").strip(),
             "username": request.form.get("username", "").strip(),
             "password": request.form.get("password", "").strip(),
         }
 
         try:
-            self.auth_model.validate_login(**parameters)
-            session["room"] = self.auth_model.get_room_for_room_name(parameters["room"])
-            session["user"] = dict(
-                self.auth_model.get_user_for_username(parameters["username"])
-            )
-            result = redirect(url_for("room.room"))
+            user, room = self.auth_model.validate_login(**parameters)
+            session["user"] = dict(user)
+            result = redirect(url_for("room.room", room_uuid=room["uuid"]))
         except AuthValidationException as e:
             logging.warning(e)
             flash(e.get_message())

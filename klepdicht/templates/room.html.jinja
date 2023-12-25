@@ -22,11 +22,12 @@
         {% if session and session.user and session.user.uuid %}
         user_id = "{{ session.user.uuid }}";
         color = "{{ session.user.color }}";
-        room_name = "{{ session.room.name }}";
+        room_name = "{{ room_name }}";
+        room_uuid = "{{ room_uuid }}";
         document.getElementById('message').placeholder = "#" + room_name;
         document.querySelector('#send').style.background = `linear-gradient(135deg,${color},#1384C5) border-box`;
         {% else %}
-        user_id = false;
+            window.location.href = "{{ url_for('auth.logout') }}";
         {% endif %}
 
         function sendMessage() {
@@ -38,7 +39,7 @@
                 return;
             }
             console.log("Sending a message")
-            socket.send({message: message});
+            socket.send({message: message, room: room_uuid});
             document.querySelector('#message').value = '';
         }
 
@@ -66,13 +67,8 @@
             messages.insertBefore(message, messages.childNodes[2]);
         }
 
-        const socket = io.connect('{{ endpoint_url }}');
-        socket.on('connect', function() {
-            socket.emit('joined', {"last_message_id": last_message_id});
-        });
-
-        socket.on('message', function(data) {
-            if (!data) {
+        function receiveMessage(data) {
+                if (!data) {
                 console.log("Empty message from server");
                 return;
             }
@@ -92,6 +88,15 @@
                 addMessage(data.message, data.author_uuid, data.color);
                 last_message_id = data.id;
             }
+        }
+
+        const socket = io.connect('{{ endpoint_url }}');
+        socket.on('connect', function() {
+            socket.emit('joined', {"last_message_id": last_message_id, "room_uuid": room_uuid, "user_id": user_id, "room_name": room_name, "color": color});
+        });
+
+        socket.on('message', function(data) {
+            receiveMessage(data);
         });
 
         socket.on('error', console.error.bind(console));
@@ -102,6 +107,7 @@
                 sendMessage();
             }
         };
+
         document.querySelector('#exit').addEventListener('click', function() {
             //socket.emit('leave');
             window.location.href = "{{ url_for('auth.logout') }}";

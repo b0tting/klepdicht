@@ -26,9 +26,9 @@ class AuthController(BaseController):
 
         self.blueprint.add_url_rule("/logout", "logout", self.logout, methods=["GET"])
 
-    def login(self, room="", username="", password=""):
+    def login(self, room_name="", username="", password=""):
         parameters = {
-            "room": request.args.get("room", room),
+            "room": request.args.get("room_name", room_name),
             "username": request.args.get("username", username),
             "password": request.args.get("password", password),
         }
@@ -36,9 +36,11 @@ class AuthController(BaseController):
 
     def logout(self):
         user = session.pop("user", None)
+        room_name = session.pop("last_room_name", None)
         if user:
             flash(f"{user.get('username')} logged out")
             parameters = {
+                "room_name": room_name,
                 "username": user.get("username"),
                 "password": user.get("password"),
             }
@@ -56,6 +58,7 @@ class AuthController(BaseController):
         try:
             user, room = self.auth_model.validate_login(**parameters)
             session["user"] = dict(user)
+            session["last_room_name"] = room["name"]
             result = redirect(url_for("room.room", room_uuid=room["uuid"]))
         except AuthValidationException as e:
             logging.warning(e)

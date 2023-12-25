@@ -25,7 +25,6 @@ class RoomController(BaseController):
             logging.debug(f"Was looking for room {room_uuid} but could not find it!")
             flash("Room has dissappeard!")
             return redirect(url_for("auth.login"))
-        print(dict(room))
         return render_template(
             "room.html.jinja",
             message_character_limit=self.settings.get("message_character_limit"),

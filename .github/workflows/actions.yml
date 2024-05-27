@@ -13,16 +13,16 @@ jobs:
           uses: actions/checkout@v2
 
         - name: Install dependencies
-          run:
-              - echo "Installing dependencies"
-              - poetry install
+          run: |
+              echo "Installing dependencies"
+              poetry install
 
         - name: Test
-          run:
-              - echo "Running tests"
-              - poetry run pytest
+          run: |
+              echo "Running tests"
+              poetry run pytest
 
         - name: Deploy
-          run:
-            - pip install flake8
-            - flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+          run: |
+            pip install flake8
+            flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics

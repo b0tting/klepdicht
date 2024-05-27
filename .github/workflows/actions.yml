@@ -1,0 +1,28 @@
+name: My Basic Pipeline
+
+on:
+    push:
+        branches:
+            - main
+
+jobs:
+    build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Install dependencies
+      run:
+          - echo "Installing dependencies"
+          - poetry install
+
+    - name: Test
+      run:
+          - echo "Running tests"
+          - poetry run pytest
+
+    - name: Deploy
+      run:
+        - pip install flake8
+        - flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
